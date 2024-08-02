@@ -1,0 +1,12 @@
+{
+  "name": "vr-code",
+  "module": "main.ts",
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^5.6.0-beta"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch"
+  }
+}

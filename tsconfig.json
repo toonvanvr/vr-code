@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["DOM", "ESNext"],
+    "exactOptionalPropertyTypes": true,
+    "sourceMap": true,
+    "rootDir": "src",
+    "outDir": "web/js/vr-code",
+    "useDefineForClassFields": true
+  }
+}
