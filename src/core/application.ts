@@ -1,41 +1,59 @@
-import type { Controller } from "./abstract/controller.class.js";
-import { ApplicationOptions } from "./application.types.js";
-import { KeyboardController } from "./controllers/keyboard.controller.js";
-import { ApplicationElement } from "./elements/application.element.js";
-
+import type { ApplicationElement } from './abstract/application.element.js'
+import { ApplicationOptions } from './application.types.js'
+import { KeyboardController } from './elements/controllers/keyboard.controller.js'
+import { RootElement } from './elements/root.element.js'
+import { ScopeElement } from './elements/scope.element.js'
+import { DeveloperError } from './errors/developer.error.js'
 export class Application {
-  /** HTML tag for the root element and prefix for custom elements */
-  public readonly htmlTag: string;
+  /** List of {@link ApplicationElement}s to be registered as custom elements */
+  static readonly elements = [RootElement, ScopeElement, KeyboardController]
 
-  /** Input interfaces extending {@link Controller} */
-  public readonly controllers = new Set([new KeyboardController()]);
+  /** HTML tag for the root element and prefix for custom elements */
+  public readonly htmlTag: string
 
   constructor({ htmlTag }: ApplicationOptions) {
-    this.htmlTag = htmlTag;
-    this.registerHtmlElements();
+    this.htmlTag = htmlTag
+    this.registerHtmlElements()
+
+    console.debug(this)
   }
 
   registerHtmlElements() {
-    const elements = [{ tag: this.htmlTag, Element: ApplicationElement }];
+    const definitions = Application.elements.map((constructor) => ({
+      constructor,
+      tag:
+        constructor.name === RootElement.name
+          ? this.htmlTag
+          : `${this.htmlTag}${constructor.name
+              .replace(/Element$/, '')
+              .replace(/([A-Z])/g, '-$1')
+              .toLowerCase()}`,
+    }))
+
+    // Debug info
+    console.debug(
+      'Registering custom HTML elements:',
+      definitions.map(({ tag }) => `\n• <${tag}>`).join()
+    )
 
     // Assert no HTML tag namespace collisions
-    const namespaceCollisions = elements
-      .map(({ tag }) => customElements.get(tag))
-      .filter((v) => v !== undefined);
+    const collisions = definitions.filter(
+      ({ tag }) => customElements.get(tag) !== undefined
+    )
 
-    if (namespaceCollisions.length) {
-      throw new Error(
-        `Custom element${
-          namespaceCollisions.length > 1 ? "s" : ""
-        } already registered: ${namespaceCollisions
-          .map((v) => v?.name)
-          .join(", ")}`
-      );
+    if (collisions.length) {
+      const collision = collisions.length > 1 ? 'collisions' : 'collision'
+      throw new DeveloperError(`HTML Custom Element namespace ${collision}`, {
+        description: collisions.map(
+          ({ tag, constructor }) => `<${tag}> → ${constructor.name}`
+        ),
+        solution: `Provide another value for ${this.constructor.name}({ htmlTag: '${this.htmlTag}' })`,
+      }).toString()
     }
 
     // Register the elements
-    for (const { tag, Element } of elements) {
-      customElements.define(tag, Element);
+    for (const { tag, constructor } of definitions) {
+      customElements.define(tag, constructor)
     }
   }
 }

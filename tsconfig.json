@@ -3,6 +3,7 @@
     "strict": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "target": "ESNext",
     "lib": ["DOM", "ESNext"],
     "exactOptionalPropertyTypes": true,
     "sourceMap": true,
