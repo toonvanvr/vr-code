@@ -3,14 +3,16 @@ import type { RootElement } from '../elements/root.element.js'
 import { DeveloperError } from '../errors/developer.error.js'
 
 export abstract class ApplicationElement extends HTMLElement {
+  protected static readonly actions: ((...args: any[]) => any)[] = []
+
   protected root: RootElement | null = null
 
   constructor() {
     super()
-    this.setAttribute('tabIndex', 1)
   }
 
   connectedCallback(): void {
+    // Assert and assign `this.root`
     if (this.tagName === 'vr-code') {
       this.root = this as unknown as RootElement
     } else {
