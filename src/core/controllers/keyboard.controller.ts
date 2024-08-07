@@ -1,21 +1,24 @@
 import { Commandable } from '../actions/types.js'
+import { assertExhausted } from '../util/typescript.js'
 import { KeyboardControllerOptions } from './keyboard.controller.types.js'
 
-export class KeyboardController<T extends Commandable<any>> {
-  target: T
+export class KeyboardController {
+  target: Commandable<any>
 
-  constructor({ target }: KeyboardControllerOptions<T>) {
+  constructor({ target }: KeyboardControllerOptions) {
     this.target = target
 
     document.addEventListener('keydown', (keyboard) => {
-      const { reactions } = this.target.order({ keyboard })
+      const { effects } = this.target.order({ keyboard })
 
-      for (const { command, payload } of reactions) {
-        switch (command) {
+      for (const effect of effects) {
+        switch (effect.type) {
           case 'focus':
-            console.log('focus', payload)
-            this.target = payload
+            this.target = effect.target
+            console.log('focus', this.target)
             break
+          default:
+            assertExhausted(effect.type)
         }
       }
     })

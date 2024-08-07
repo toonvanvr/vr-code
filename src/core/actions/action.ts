@@ -21,19 +21,19 @@ export class Action<Target> {
     const propagation: EventPropagation = {
       received: false,
       bubble: true,
-      reactions: [],
+      effects: [],
     }
 
     if (command.keyboard) {
       for (const keyBind of this.keyBinds) {
         if (keyBind.match(command.keyboard)) {
-          const { received, bubble, reactions } = this.execute.call(
+          const { received, bubble, effects } = this.execute.call(
             target,
             command
           )
           propagation.received ||= received
           propagation.bubble &&= bubble
-          propagation.reactions.push(...reactions)
+          propagation.effects.push(...effects)
           if (!bubble) {
             break
           }

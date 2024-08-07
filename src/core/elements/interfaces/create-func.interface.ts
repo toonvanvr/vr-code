@@ -1,5 +1,6 @@
+import { CommandResult } from '../../actions/types.js'
 import { Func } from '../func.js'
 
 export interface ICreateFunc {
-  createFunc(): { func: Func }
+  createFunc(): CommandResult<{ func: Func }>
 }

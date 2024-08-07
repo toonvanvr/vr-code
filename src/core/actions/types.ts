@@ -1,27 +1,26 @@
-import { Autocomplete } from '../util/types.js'
 import { Action } from './action.js'
-import { ReactionMap } from './react.types.js'
 
-export type ReactionCommand =
-  | {
-      command: Autocomplete<string, keyof ReactionMap>
-      payload?: any
-    }
-  | {
-      command: 'focus'
-      payload: Commandable<any>
-    }
+export type Effect =
+  // TOOD: or generic
+  {
+    type: 'focus'
+    target: Commandable<any>
+  }
+
+export type CommandResult<T = void> = { effects: Effect[] } & (T extends void
+  ? {}
+  : { data: T })
 
 export type Command = {
   keyboard?: KeyboardEvent
-  command?: Autocomplete<string, keyof ReactionMap>
+  command?: string
   payload?: any
 }
 
 export type EventPropagation = {
   received: boolean
   bubble: boolean
-  reactions: ReactionCommand[]
+  effects: Effect[]
 }
 
 export type Executor<Target> = (

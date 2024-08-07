@@ -1,5 +1,5 @@
 import { CommandResult } from '../../actions/types'
 
-export interface ICancel {
-  cancel(): CommandResult
+export interface IEdit {
+  edit(): CommandResult
 }

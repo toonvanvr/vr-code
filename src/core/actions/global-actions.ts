@@ -1,8 +1,8 @@
 import { ICancel } from '../elements/interfaces/cancel.interface.js'
 import { ICreateFunc } from '../elements/interfaces/create-func.interface.js'
+import { IEdit } from '../elements/interfaces/edit.interface.js'
 import { Action } from './action.js'
 import { KeyBind } from './key-bind.js'
-import { react } from './react.js'
 import { Command } from './types.js'
 
 export const globalActions = {
@@ -10,34 +10,41 @@ export const globalActions = {
     name: 'create function',
     description: 'Create a new function',
     execute(command: Command) {
-      try {
-        const { func } = this.createFunc()
-        return {
-          received: true,
-          bubble: false,
-          reactions: [react('focus', func)],
-        }
-      } catch (cause: unknown) {
-        return {
-          received: true,
-          bubble: false,
-          reactions: [],
-        }
+      const { effects } = this.createFunc()
+      return {
+        received: true,
+        bubble: false,
+        effects,
       }
     },
     keyBinds: new Set([new KeyBind('F')]),
   }),
+
   cancel: new Action<ICancel>({
     name: 'cancel',
     description: 'Cancel the current action',
     execute(command: Command) {
-      const { focus: newTarget } = this.cancel()
+      const { effects } = this.cancel()
       return {
         received: true,
         bubble: false,
-        reactions: newTarget ? [react('focus', newTarget)] : [],
+        effects,
       }
     },
     keyBinds: new Set([new KeyBind('Escape')]),
+  }),
+
+  edit: new Action<IEdit>({
+    name: 'edit',
+    description: 'Edit the target',
+    execute(command: Command) {
+      const { effects } = this.edit()
+      return {
+        received: true,
+        bubble: false,
+        effects,
+      }
+    },
+    keyBinds: new Set([new KeyBind('Enter')]),
   }),
 } as const

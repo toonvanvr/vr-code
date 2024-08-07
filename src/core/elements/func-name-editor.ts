@@ -5,30 +5,29 @@ import {
   CommandResult,
   DefaultCommandable,
 } from '../actions/types.js'
+import { FuncNameEditorOptions } from './func-name-editor.types.js'
 import { FuncName } from './func-name.js'
-import { FuncOptions } from './func.types.js'
 import { ICancel } from './interfaces/cancel.interface.js'
-import { Scope } from './scope.js'
 
-export class Func implements DefaultCommandable<Func>, ICancel {
-  public static readonly actions: ActionSet<Func> = new Set([
+export class FuncNameEditor
+  implements DefaultCommandable<FuncNameEditor>, ICancel
+{
+  public static readonly actions: ActionSet<FuncNameEditor> = new Set([
     globalActions.cancel,
   ])
 
-  private parentScope: Scope
   public readonly name: FuncName
 
-  public actions: ActionSet<Func> = Func.actions
+  public actions = FuncNameEditor.actions
   public order = defaultOrderHandler
 
-  constructor({ parentScope }: FuncOptions) {
-    this.parentScope = parentScope
-    this.name = new FuncName({ func: this })
+  constructor({ name }: FuncNameEditorOptions) {
+    this.name = name
   }
 
   cancel(): CommandResult {
     return {
-      effects: [{ type: 'focus', target: this.parentScope }],
+      effects: [{ type: 'focus', target: this.name }],
     }
   }
 }

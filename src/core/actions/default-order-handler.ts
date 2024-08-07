@@ -8,24 +8,33 @@ import {
 export const defaultOrderHandler = function <
   Target extends DefaultCommandable<Target>
 >(this: Target, command: Command): EventPropagation {
-  console.groupCollapsed(
-    `order: ${
-      command.keyboard ? `Keyboard: ${command.keyboard.key}` : command.command
-    }`
-  )
+  if (command.keyboard) {
+    const keys = []
+    if (command.keyboard.ctrlKey) keys.unshift('Ctrl')
+    if (command.keyboard.shiftKey) keys.unshift('Shift')
+    if (command.keyboard.altKey) keys.unshift('Alt')
+    if (command.keyboard.metaKey) keys.unshift('Meta')
+    if (!['Ctrl', 'Alt', 'Meta', 'Shift'].includes(command.keyboard.key)) {
+      keys.push(command.keyboard.key)
+    }
+    const keysStr = keys.map((key) => `[${key}]`).join('+')
+    console.groupCollapsed(`${this.constructor.name} → ${keysStr}`)
+  } else {
+    console.groupCollapsed(`${this.constructor.name} → ${command.command}`)
+  }
   console.log('target\n', this)
   console.log('command\n', command)
   const propagation: EventPropagation = {
     received: false,
     bubble: true,
-    reactions: [],
+    effects: [],
   }
 
   for (const action of this.actions) {
-    const { received, bubble, reactions } = action.receive(this, command)
+    const { received, bubble, effects } = action.receive(this, command)
     propagation.received ||= received
     propagation.bubble &&= bubble
-    propagation.reactions.push(...reactions)
+    propagation.effects.push(...effects)
     if (!bubble) {
       break
     }
