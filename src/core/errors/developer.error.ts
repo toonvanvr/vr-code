@@ -1,3 +1,3 @@
-import { ApplicationError } from '../abstract/application.error.js'
+import { AbstractError } from '../abstract/error.abstract'
 
-export class DeveloperError extends ApplicationError {}
+export class DeveloperError extends AbstractError {}

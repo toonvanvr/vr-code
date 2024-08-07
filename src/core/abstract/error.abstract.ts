@@ -1,4 +1,4 @@
-import { ApplicationErrorOptions } from './application.error.types'
+import { AbstractErrorOptions } from './error.abstract.types.js'
 
 function msg<T extends undefined | string | Iterable<string>>(
   msg: T
@@ -14,7 +14,7 @@ function msg<T extends undefined | string | Iterable<string>>(
   }
 }
 
-export abstract class ApplicationError extends Error {
+export abstract class AbstractError extends Error {
   public readonly description: string | undefined
   public readonly solution: string | undefined
   public readonly data: unknown | undefined
@@ -22,7 +22,7 @@ export abstract class ApplicationError extends Error {
 
   constructor(
     message: string | Iterable<string>,
-    { description, solution, cause, data }: ApplicationErrorOptions = {}
+    { description, solution, cause, data }: AbstractErrorOptions = {}
   ) {
     super(msg(message), { cause })
     this.description = description ? msg(description) : undefined
