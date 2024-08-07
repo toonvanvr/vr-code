@@ -1,12 +1,16 @@
-export function cloneTemplate(
+export function cloneTemplate<SelectorMap extends Record<string, string>>(
   id: `${string}-template`,
-  alter?: (template: DocumentFragment) => void
+  children: SelectorMap = {} as SelectorMap,
+  alter?: (
+    elements: Record<keyof SelectorMap, HTMLElement>,
+    document: DocumentFragment
+  ) => void
 ): DocumentFragment {
   const { content } = document
     .getElementById(id)!
     .cloneNode(true) as HTMLTemplateElement
 
-  alter?.(content)
+  alter?.(getChildren(content, children), content)
   return content
 }
 

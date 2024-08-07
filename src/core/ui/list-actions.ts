@@ -1,24 +1,34 @@
 import { Action } from '../actions/action.js'
-import { cloneTemplate, getChildren } from '../util/ui.js'
+import { cloneTemplate } from '../util/ui.js'
 
 export function listActions(actions: Action<any>[]) {
   const actionList = document.querySelector('.action-list') as HTMLDivElement
 
   for (const action of actions) {
-    const clone = cloneTemplate('action-template', (container) => {
-      const el = getChildren(container, {
+    const clone = cloneTemplate(
+      'action-template',
+      {
         name: '.action-name',
         description: '.action-description',
-        keybinds: '.action-keybinds',
-      })
+        keyBinds: '.action-keybinds',
+      },
+      ({ name, description, keyBinds }) => {
+        name.innerHTML = action.name
+        description.innerHTML = action.description
 
-      el.name.innerHTML = action.name
-      el.description.innerHTML = action.description
-
-      for (const keybind of action.keyBinds) {
-        el.keybinds.append(cloneTemplate('action-keybind-template'))
+        for (const { key } of action.keyBinds) {
+          keyBinds.append(
+            cloneTemplate(
+              'action-keybind-template',
+              { keyBind: '.action-keybind' },
+              ({ keyBind }) => {
+                keyBind.innerText = key
+              }
+            )
+          )
+        }
       }
-    })
+    )
     actionList.append(clone)
   }
 }
