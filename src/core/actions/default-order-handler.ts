@@ -8,7 +8,13 @@ import {
 export const defaultOrderHandler = function <
   Target extends DefaultCommandable<Target>
 >(this: Target, command: Command): EventPropagation {
-  console.log('order', { target: this, command })
+  console.groupCollapsed(
+    `order: ${
+      command.keyboard ? `Keyboard: ${command.keyboard.key}` : command.command
+    }`
+  )
+  console.log('target\n', this)
+  console.log('command\n', command)
   const propagation: EventPropagation = {
     received: false,
     bubble: true,
@@ -25,6 +31,7 @@ export const defaultOrderHandler = function <
     }
   }
 
-  console.log('stopped bubbling after', { target: this, command, propagation })
+  console.log('propagation\n', propagation)
+  console.groupEnd()
   return propagation
 } satisfies OrderHandler<any>

@@ -1,4 +1,6 @@
+import { Commandable } from './types'
+
 // extensible
 export interface ReactionMap {
-  focus: any
+  focus: Commandable<any>
 }

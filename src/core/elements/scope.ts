@@ -15,9 +15,9 @@ export class Scope implements Commandable<Scope>, ICreateFunc {
 
   constructor() {}
 
-  createFunction(): Func {
-    const func = new Func()
+  createFunc(): { func: Func } {
+    const func = new Func({ parentScope: this })
     this.functions.add(func)
-    return func
+    return { func }
   }
 }

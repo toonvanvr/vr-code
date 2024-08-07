@@ -7,13 +7,13 @@ export class KeyboardController<T extends Commandable<any>> {
   constructor({ target }: KeyboardControllerOptions<T>) {
     this.target = target
 
-    document.addEventListener('keypress', (keyboard) => {
+    document.addEventListener('keydown', (keyboard) => {
       const { reactions } = this.target.order({ keyboard })
 
       for (const { command, payload } of reactions) {
         switch (command) {
           case 'focus':
-            console.log('focus', { target: payload })
+            console.log('focus', payload)
             this.target = payload
             break
         }
