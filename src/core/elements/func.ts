@@ -27,8 +27,14 @@ export class Func implements DefaultCommandable<Func>, ICancel {
   }
 
   cancel(): CommandResult {
-    return {
-      effects: [{ type: 'focus', target: this.parentScope }],
+    if (this.name.value) {
+      return {
+        effects: [{ type: 'blur' }],
+      }
+    } else {
+      return {
+        effects: [{ type: 'delete' }],
+      }
     }
   }
 }

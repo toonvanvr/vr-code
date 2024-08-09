@@ -21,6 +21,8 @@ export class FuncName implements DefaultCommandable<FuncName>, ICancel, IEdit {
   actions: ActionSet<FuncName> = FuncName.actions
   public order = defaultOrderHandler
 
+  public value: string | null = null
+
   constructor({ func }: FuncNameOptions) {
     this.func = func
   }

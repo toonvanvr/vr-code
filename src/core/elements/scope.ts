@@ -18,10 +18,10 @@ export class Scope implements Commandable<Scope>, ICreateFunc {
   createFunc(): CommandResult<{ func: Func }> {
     const func = new Func({ parentScope: this })
     this.functions.add(func)
-    const { effects } = func.name.edit()
+    const { effects: editEffects } = func.name.edit()
     return {
       data: { func },
-      effects,
+      effects: [{ type: 'focus', target: func }, ...editEffects],
     }
   }
 }

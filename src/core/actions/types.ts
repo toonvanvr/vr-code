@@ -2,10 +2,16 @@ import { Action } from './action.js'
 
 export type Effect =
   // TOOD: or generic
-  {
-    type: 'focus'
-    target: Commandable<any>
-  }
+  | {
+      type: 'focus'
+      target: Commandable<any>
+    }
+  | {
+      type: 'blur'
+    }
+  | {
+      type: 'delete'
+    }
 
 export type CommandResult<T = void> = { effects: Effect[] } & (T extends void
   ? {}
