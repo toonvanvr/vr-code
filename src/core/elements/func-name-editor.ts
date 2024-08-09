@@ -7,17 +7,17 @@ import {
 } from '../actions/types.js'
 import { FuncNameEditorOptions } from './func-name-editor.types.js'
 import { FuncName } from './func-name.js'
+import { IAccept } from './interfaces/accept.interface.js'
 import { ICancel } from './interfaces/cancel.interface.js'
-import { ISave } from './interfaces/save.interface.js'
 
 export class FuncNameEditor
-  implements DefaultCommandable<FuncNameEditor>, ICancel, ISave
+  implements DefaultCommandable<FuncNameEditor>, ICancel, IAccept
 {
   readonly input: HTMLInputElement
 
   public static readonly actions: ActionSet<FuncNameEditor> = new Set([
     globalActions.cancel,
-    globalActions.save,
+    globalActions.accept,
   ])
 
   public readonly name: FuncName
@@ -40,7 +40,7 @@ export class FuncNameEditor
     }
   }
 
-  save(): CommandResult {
+  accept(): CommandResult {
     this.name.value = this.input.value
     console.log('Func name = ', this.name.value)
     this.destroy()

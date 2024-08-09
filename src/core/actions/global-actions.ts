@@ -1,8 +1,8 @@
+import { IAccept } from '../elements/interfaces/accept.interface.js'
 import { ICancel } from '../elements/interfaces/cancel.interface.js'
 import { ICreateFunc } from '../elements/interfaces/create-func.interface.js'
 import { IDelete } from '../elements/interfaces/delete.interface.js'
 import { IEdit } from '../elements/interfaces/edit.interface.js'
-import { ISave } from '../elements/interfaces/save.interface.js'
 import { Action } from './action.js'
 import { KeyBind } from './key-bind.js'
 import { Command } from './types.js'
@@ -64,11 +64,11 @@ export const globalActions = {
     keyBinds: new Set([new KeyBind('Backspace'), new KeyBind('Delete')]),
   }),
 
-  save: new Action<ISave>({
-    name: 'save',
-    description: 'Save the target',
+  accept: new Action<IAccept>({
+    name: 'accept',
+    description: 'Accept or save the target',
     execute(command: Command) {
-      const { effects } = this.save()
+      const { effects } = this.accept()
       return {
         received: true,
         bubble: false,

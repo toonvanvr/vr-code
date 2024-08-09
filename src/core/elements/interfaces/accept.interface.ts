@@ -1,5 +1,5 @@
 import { CommandResult } from '../../actions/types'
 
-export interface ISave {
-  save(): CommandResult
+export interface IAccept {
+  accept(): CommandResult
 }
