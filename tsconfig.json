@@ -7,8 +7,8 @@
     "lib": ["DOM", "ESNext"],
     "exactOptionalPropertyTypes": true,
     "sourceMap": true,
-    "rootDir": "src",
-    "outDir": "web/js/vr-code",
+    "rootDir": "server/src",
+    "outDir": "server/dist",
     "useDefineForClassFields": true
-  }
+  },
 }

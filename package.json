@@ -3,6 +3,7 @@
   "module": "main.ts",
   "type": "module",
   "devDependencies": {
+    "@types/node": "^22.2.0",
     "typescript": "^5.6.0-beta"
   },
   "scripts": {
@@ -10,6 +11,8 @@
     "build:watch": "tsc --watch"
   },
   "dependencies": {
-    "rxjs": "^7.8.1"
+    "@trpc/server": "^10.45.2",
+    "rxjs": "^7.8.1",
+    "zod": "^3.23.8"
   }
 }
